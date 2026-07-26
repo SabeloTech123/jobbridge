@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>JobBridge — Job Portal Dashboard</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<!-- ================= TOAST ================= -->
+<div class="toast" id="toast"></div>
+
+<!-- ================= AUTH SCREEN ================= -->
+<div class="auth-screen" id="authScreen">
+  <div class="auth-card">
+    <div class="auth-brand">
+      <div class="logo-mark">
+        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M3 12c0-1.5 1-2.5 2.5-2.5S8 10.5 8 12s-1 2.5-2.5 2.5S3 13.5 3 12z" stroke="white" stroke-width="1.6"/>
+          <path d="M16 12c0-1.5 1-2.5 2.5-2.5S21 10.5 21 12s-1 2.5-2.5 2.5-2.5-1-2.5-2.5z" stroke="white" stroke-width="1.6"/>
+          <path d="M8 12h8" stroke="#D9A441" stroke-width="2" stroke-linecap="round"/>
+          <path d="M8 8.5V12M16 8.5V12" stroke="white" stroke-width="1.6" stroke-linecap="round"/>
+        </svg>
+      </div>
+      <span class="brand-name">JobBridge</span>
+    </div>
+    <p class="auth-tagline">Where employers and talent meet.</p>
+
+    <div class="auth-tabs">
+      <button class="auth-tab active" id="tabSignup" type="button">Sign Up</button>
+      <button class="auth-tab" id="tabLogin" type="button">Log In</button>
+    </div>
+
+    <form class="auth-form" id="signupForm">
+      <div class="role-select">
+        <button type="button" class="role-btn active" data-role="seeker" id="roleSeeker">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.5-6 8-6s8 2 8 6"/></svg>
+          I'm looking for a job
+        </button>
+        <button type="button" class="role-btn" data-role="employer" id="roleEmployer">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="8" width="18" height="12" rx="2"/><path d="M8 8V6a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+          I'm hiring
+        </button>
+      </div>
+      <label>Full name
+        <input type="text" id="signupName" required>
+      </label>
+      <label id="companyNameField" style="display:none;">Company name
+        <input type="text" id="signupCompany">
+      </label>
+      <label>Email
+        <input type="email" id="signupEmail" required>
+      </label>
+      <label>Password
+        <input type="password" id="signupPassword" minlength="6" required>
+      </label>
+      <p class="auth-error" id="signupError"></p>
+      <button type="submit" class="btn btn-primary auth-submit">Create Account</button>
+      <p class="auth-switch">Already have an account? <a href="#" id="goToLogin">Log in</a></p>
+    </form>
+
+    <form class="auth-form" id="loginForm" style="display:none;">
+      <label>Email
+        <input type="email" id="loginEmail" required>
+      </label>
+      <label>Password
+        <input type="password" id="loginPassword" required>
+      </label>
+      <p class="auth-error" id="loginError"></p>
+      <button type="submit" class="btn btn-primary auth-submit">Log In</button>
+      <p class="auth-switch">Don't have an account? <a href="#" id="goToSignup">Sign up</a></p>
+      <p class="auth-demo">Or <a href="#" id="loadDemoBtn">explore a demo account</a></p>
+    </form>
+  </div>
+</div>
+
+<!-- ================= APP SHELL ================= -->
+<div class="app-shell" id="appShell">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="sidebar-top">
+      <div class="sidebar-logo">
+        <div class="logo-mark small">
+          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M3 12c0-1.5 1-2.5 2.5-2.5S8 10.5 8 12s-1 2.5-2.5 2.5S3 13.5 3 12z" stroke="white" stroke-width="1.6"/>
+            <path d="M16 12c0-1.5 1-2.5 2.5-2.5S21 10.5 21 12s-1 2.5-2.5 2.5-2.5-1-2.5-2.5z" stroke="white" stroke-width="1.6"/>
+            <path d="M8 12h8" stroke="#D9A441" stroke-width="2" stroke-linecap="round"/>
+            <path d="M8 8.5V12M16 8.5V12" stroke="white" stroke-width="1.6" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <span>JobBridge</span>
+      </div>
+
+      <nav class="sidebar-nav" id="seekerNav">
+        <p class="nav-label">Menu</p>
+        <button class="nav-item active" data-page="seekerDashboard">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="3" y="3" width="8" height="8" rx="2"/><rect x="13" y="3" width="8" height="8" rx="2"/><rect x="3" y="13" width="8" height="8" rx="2"/><rect x="13" y="13" width="8" height="8" rx="2"/></svg>
+          Dashboard
+        </button>
+        <button class="nav-item" data-page="browseJobs">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.5" y2="16.5"/></svg>
+          Browse Jobs
+        </button>
+        <button class="nav-item" data-page="myApplications">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="6" y="3" width="12" height="18" rx="2"/><line x1="9" y1="8" x2="15" y2="8"/><line x1="9" y1="12" x2="15" y2="12"/><line x1="9" y1="16" x2="13" y2="16"/></svg>
+          My Applications
+        </button>
+        <button class="nav-item" data-page="savedJobs">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M6 4h12v17l-6-4-6 4V4z"/></svg>
+          Saved Jobs
+        </button>
+        <p class="nav-label">Account</p>
+        <button class="nav-item" data-page="seekerProfile">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.5-6 8-6s8 2 8 6"/></svg>
+          Profile
+        </button>
+      </nav>
+
+      <nav class="sidebar-nav" id="employerNav" style="display:none;">
+        <p class="nav-label">Menu</p>
+        <button class="nav-item active" data-page="employerDashboard">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="3" y="3" width="8" height="8" rx="2"/><rect x="13" y="3" width="8" height="8" rx="2"/><rect x="3" y="13" width="8" height="8" rx="2"/><rect x="13" y="13" width="8" height="8" rx="2"/></svg>
+          Dashboard
+        </button>
+        <button class="nav-item" data-page="postJob">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="12" cy="12" r="9"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
+          Post a Job
+        </button>
+        <button class="nav-item" data-page="managePostings">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="3" y="8" width="18" height="12" rx="2"/><path d="M8 8V6a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+          Manage Postings
+        </button>
+        <button class="nav-item" data-page="applications">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M17 21v-2a4 4 0 0 0-4-4H7a4 4 0 0 0-4 4v2"/><circle cx="10" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+          Applications
+        </button>
+        <p class="nav-label">Account</p>
+        <button class="nav-item" data-page="companyProfile">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="4" y="3" width="16" height="18" rx="1"/><line x1="9" y1="8" x2="9" y2="8"/><line x1="9" y1="12" x2="9" y2="12"/><line x1="9" y1="16" x2="9" y2="16"/><line x1="15" y1="8" x2="15" y2="8"/><line x1="15" y1="12" x2="15" y2="12"/><line x1="15" y1="16" x2="15" y2="16"/></svg>
+          Company Profile
+        </button>
+      </nav>
+    </div>
+
+    <button class="sign-out-btn" id="signOutBtn">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+      Sign Out
+    </button>
+  </aside>
+
+  <!-- MAIN -->
+  <main class="main-content">
+    <header class="topbar">
+      <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Open menu">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+      </button>
+      <div class="topbar-user">
+        <span class="user-avatar" id="userAvatar">J</span>
+        <span class="user-name" id="userNameLabel">Jordan</span>
+      </div>
+    </header>
+
+    <div class="content-scroll">
+
+      <!-- ============ SEEKER: DASHBOARD ============ -->
+      <section class="page active" id="page-seekerDashboard">
+        <p class="breadcrumb">Overview</p>
+        <h1 class="welcome-title">Welcome back, <span id="seekerWelcomeName">there</span></h1>
+        <p class="page-sub">Here's how your job search is going.</p>
+
+        <div class="stats-grid">
+          <div class="stat-card">
+            <div class="stat-icon navy"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="6" y="3" width="12" height="18" rx="2"/><line x1="9" y1="8" x2="15" y2="8"/><line x1="9" y1="12" x2="15" y2="12"/></svg></div>
+            <p class="stat-num" id="statApplications">0</p>
+            <p class="stat-label">Applications Sent</p>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon gold"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M17 21v-2a4 4 0 0 0-4-4H7a4 4 0 0 0-4 4v2"/><circle cx="10" cy="7" r="4"/></svg></div>
+            <p class="stat-num" id="statInterviews">0</p>
+            <p class="stat-label">Interviews</p>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon navy"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M6 4h12v17l-6-4-6 4V4z"/></svg></div>
+            <p class="stat-num" id="statSaved">0</p>
+            <p class="stat-label">Saved Jobs</p>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon gold"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.5-6 8-6s8 2 8 6"/></svg></div>
+            <p class="stat-num" id="statProfile">40%</p>
+            <p class="stat-label">Profile Complete</p>
+          </div>
+        </div>
+
+        <div class="section-row">
+          <h2 class="section-title">Recent Applications</h2>
+          <button class="link-btn" data-nav="myApplications">View all →</button>
+        </div>
+        <div class="table-card">
+          <table class="data-table" id="recentApplicationsTable">
+            <thead><tr><th>Job</th><th>Company</th><th>Applied</th><th>Status</th></tr></thead>
+            <tbody></tbody>
+          </table>
+          <p class="empty-state" id="recentApplicationsEmpty">You haven't applied to any jobs yet. <button class="link-btn" data-nav="browseJobs">Browse open roles →</button></p>
+        </div>
+      </section>
+
+      <!-- ============ SEEKER: BROWSE JOBS ============ -->
+      <section class="page" id="page-browseJobs">
+        <p class="breadcrumb">Opportunities</p>
+        <h1 class="page-title">Browse Jobs</h1>
+        <p class="page-sub">Search and filter open roles from companies hiring right now.</p>
+
+        <div class="filter-bar">
+          <div class="search-input">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.5" y2="16.5"/></svg>
+            <input type="text" id="jobSearchInput" placeholder="Search job titles or keywords...">
+          </div>
+          <select id="filterLocation" class="select-input">
+            <option value="">All Locations</option>
+          </select>
+          <select id="filterType" class="select-input">
+            <option value="">All Types</option>
+            <option value="Full-time">Full-time</option>
+            <option value="Part-time">Part-time</option>
+            <option value="Contract">Contract</option>
+            <option value="Remote">Remote</option>
+          </select>
+          <select id="filterCategory" class="select-input">
+            <option value="">All Categories</option>
+          </select>
+        </div>
+
+        <div class="jobs-grid" id="jobsGrid"></div>
+        <p class="empty-state" id="jobsEmpty" style="display:none;">No jobs match your search. Try adjusting your filters.</p>
+      </section>
+
+      <!-- ============ SEEKER: MY APPLICATIONS ============ -->
+      <section class="page" id="page-myApplications">
+        <p class="breadcrumb">Job Search</p>
+        <h1 class="page-title">My Applications</h1>
+        <p class="page-sub">Track the status of every role you've applied to.</p>
+
+        <div class="table-card">
+          <table class="data-table" id="applicationsTable">
+            <thead><tr><th>Job</th><th>Company</th><th>Applied</th><th>Status</th></tr></thead>
+            <tbody></tbody>
+          </table>
+          <p class="empty-state" id="applicationsEmpty">No applications yet. <button class="link-btn" data-nav="browseJobs">Browse open roles →</button></p>
+        </div>
+      </section>
+
+      <!-- ============ SEEKER: SAVED JOBS ============ -->
+      <section class="page" id="page-savedJobs">
+        <p class="breadcrumb">Job Search</p>
+        <h1 class="page-title">Saved Jobs</h1>
+        <p class="page-sub">Roles you've bookmarked to apply to later.</p>
+
+        <div class="jobs-grid" id="savedJobsGrid"></div>
+        <p class="empty-state" id="savedJobsEmpty" style="display:none;">You haven't saved any jobs yet. <button class="link-btn" data-nav="browseJobs">Browse open roles →</button></p>
+      </section>
+
+      <!-- ============ SEEKER: PROFILE ============ -->
+      <section class="page" id="page-seekerProfile">
+        <p class="breadcrumb">Account</p>
+        <h1 class="page-title">Profile</h1>
+        <p class="page-sub">This information may be shared with employers when you apply.</p>
+
+        <form class="profile-form" id="seekerProfileForm">
+          <label>Full name
+            <input type="text" id="profileName">
+          </label>
+          <label>Headline
+            <input type="text" id="profileHeadline" placeholder="e.g. Senior Frontend Engineer">
+          </label>
+          <label>Skills <span>(comma separated)</span>
+            <input type="text" id="profileSkills" placeholder="e.g. React, Node.js, SQL">
+          </label>
+          <label>About you
+            <textarea id="profileBio" rows="5" placeholder="A short summary employers will see..."></textarea>
+          </label>
+          <button type="submit" class="btn btn-primary">Save Profile</button>
+        </form>
+      </section>
+
+      <!-- ============ EMPLOYER: DASHBOARD ============ -->
+      <section class="page" id="page-employerDashboard">
+        <p class="breadcrumb">Overview</p>
+        <h1 class="welcome-title">Welcome back, <span id="employerWelcomeName">there</span></h1>
+        <p class="page-sub">Here's what's happening with your postings.</p>
+
+        <div class="stats-grid">
+          <div class="stat-card">
+            <div class="stat-icon navy"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="3" y="8" width="18" height="12" rx="2"/><path d="M8 8V6a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg></div>
+            <p class="stat-num" id="statActivePostings">0</p>
+            <p class="stat-label">Active Postings</p>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon gold"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M17 21v-2a4 4 0 0 0-4-4H7a4 4 0 0 0-4 4v2"/><circle cx="10" cy="7" r="4"/></svg></div>
+            <p class="stat-num" id="statTotalApplicants">0</p>
+            <p class="stat-label">Total Applicants</p>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon navy"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg></div>
+            <p class="stat-num" id="statNewWeek">0</p>
+            <p class="stat-label">New This Week</p>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon gold"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></div>
+            <p class="stat-num" id="statInterviewing">0</p>
+            <p class="stat-label">In Interview Stage</p>
+          </div>
+        </div>
+
+        <div class="section-row">
+          <h2 class="section-title">Recent Applicants</h2>
+          <button class="link-btn" data-nav="applications">View all →</button>
+        </div>
+        <div class="table-card">
+          <table class="data-table" id="recentApplicantsTable">
+            <thead><tr><th>Applicant</th><th>Job</th><th>Applied</th><th>Status</th></tr></thead>
+            <tbody></tbody>
+          </table>
+          <p class="empty-state" id="recentApplicantsEmpty">No applicants yet. <button class="link-btn" data-nav="postJob">Post your first job →</button></p>
+        </div>
+      </section>
+
+      <!-- ============ EMPLOYER: POST A JOB ============ -->
+      <section class="page" id="page-postJob">
+        <p class="breadcrumb">Hiring</p>
+        <h1 class="page-title">Post a Job</h1>
+        <p class="page-sub">Fill in the details below to publish a new opening.</p>
+
+        <form class="profile-form form-card" id="postJobForm">
+          <label>Job title
+            <input type="text" id="jobTitle" placeholder="e.g. Senior Product Designer" required>
+          </label>
+          <div class="form-row">
+            <label>Location
+              <input type="text" id="jobLocation" placeholder="e.g. Johannesburg, ZA" required>
+            </label>
+            <label>Job type
+              <select id="jobType" class="select-input" required>
+                <option value="Full-time">Full-time</option>
+                <option value="Part-time">Part-time</option>
+                <option value="Contract">Contract</option>
+                <option value="Remote">Remote</option>
+              </select>
+            </label>
+          </div>
+          <div class="form-row">
+            <label>Category
+              <input type="text" id="jobCategory" placeholder="e.g. Engineering, Design, Sales" required>
+            </label>
+            <label>Salary range
+              <input type="text" id="jobSalary" placeholder="e.g. R30,000 - R45,000 / month">
+            </label>
+          </div>
+          <label>Job description
+            <textarea id="jobDescription" rows="6" placeholder="Describe the role, responsibilities, and requirements..." required></textarea>
+          </label>
+          <button type="submit" class="btn btn-primary">Publish Job</button>
+        </form>
+      </section>
+
+      <!-- ============ EMPLOYER: MANAGE POSTINGS ============ -->
+      <section class="page" id="page-managePostings">
+        <p class="breadcrumb">Hiring</p>
+        <h1 class="page-title">Manage Postings</h1>
+        <p class="page-sub">Edit or remove your active job listings.</p>
+
+        <div class="jobs-grid" id="managePostingsGrid"></div>
+        <p class="empty-state" id="managePostingsEmpty" style="display:none;">You haven't posted any jobs yet. <button class="link-btn" data-nav="postJob">Post your first job →</button></p>
+      </section>
+
+      <!-- ============ EMPLOYER: APPLICATIONS ============ -->
+      <section class="page" id="page-applications">
+        <p class="breadcrumb">Hiring</p>
+        <h1 class="page-title">Applications</h1>
+        <p class="page-sub">Review applicants and update their status in real time.</p>
+
+        <div class="table-card">
+          <table class="data-table" id="employerApplicationsTable">
+            <thead><tr><th>Applicant</th><th>Job</th><th>Applied</th><th>Status</th></tr></thead>
+            <tbody></tbody>
+          </table>
+          <p class="empty-state" id="employerApplicationsEmpty">No applications yet.</p>
+        </div>
+      </section>
+
+      <!-- ============ EMPLOYER: COMPANY PROFILE ============ -->
+      <section class="page" id="page-companyProfile">
+        <p class="breadcrumb">Account</p>
+        <h1 class="page-title">Company Profile</h1>
+        <p class="page-sub">This appears on every job you post.</p>
+
+        <form class="profile-form" id="companyProfileForm">
+          <label>Company name
+            <input type="text" id="companyProfileName">
+          </label>
+          <label>Website
+            <input type="text" id="companyWebsite" placeholder="e.g. https://acme.com">
+          </label>
+          <label>About the company
+            <textarea id="companyAbout" rows="5" placeholder="A short description of your company..."></textarea>
+          </label>
+          <button type="submit" class="btn btn-primary">Save Company Profile</button>
+        </form>
+      </section>
+
+    </div>
+  </main>
+</div>
+
+<!-- ================= JOB DETAIL / APPLY MODAL ================= -->
+<div class="modal-overlay" id="jobModalOverlay">
+  <div class="modal">
+    <button class="modal-close" id="jobModalClose">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="6" y1="6" x2="18" y2="18"/><line x1="6" y1="18" x2="18" y2="6"/></svg>
+    </button>
+    <p class="modal-eyebrow" id="modalCompany">Company</p>
+    <h2 class="modal-title" id="modalJobTitle">Job Title</h2>
+    <div class="modal-tags" id="modalTags"></div>
+    <p class="modal-desc" id="modalDescription"></p>
+    <label class="modal-cover-label">Cover note <span>(optional)</span>
+      <textarea id="coverNote" rows="4" placeholder="Tell them why you're a great fit..."></textarea>
+    </label>
+    <div class="modal-actions">
+      <button class="btn btn-secondary" id="modalCancelBtn" type="button">Cancel</button>
+      <button class="btn btn-primary" id="modalApplyBtn" type="button">Submit Application</button>
+    </div>
+  </div>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
