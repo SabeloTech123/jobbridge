@@ -2,7 +2,7 @@
 
 A job portal dashboard with separate views for job seekers and employers. Built as a frontend-only project — no backend required.
 
-**Live demo:** https://YOUR-USERNAME.github.io/YOUR-REPO-NAME/
+**Live demo:** https://sabelotech123.github.io/jobbridge/
 
 ## Features
 
